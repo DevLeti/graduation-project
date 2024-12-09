@@ -5,6 +5,7 @@ from langchain import LLMChain, PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from sentence_transformers import SentenceTransformer
+from konlpy.tag import Okt
 import numpy as np
 import faiss
 import os
@@ -83,6 +84,7 @@ class QuestionArticleMatcher:
 
 class QuestionAnsweringSystem:
     def __init__(self):
+        self.okt = Okt()
         self.matcher = QuestionArticleMatcher()
         self.llm = ChatOpenAI(temperature=0.7, api_key=api_key)
         self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
@@ -104,6 +106,10 @@ class QuestionAnsweringSystem:
             memory=self.memory
         )
 
+    def process_sentence(self, sentence: str) -> str:
+        nouns = self.okt.nouns(sentence)
+        noun_string = ' '.join(nouns)
+        return noun_string
     def generate_keyword(self, user_keyword):
         keyword_gen_template = """아래의 질문을 몇가지 키워드로 요약해줘.
         질문: {question}"""
@@ -140,7 +146,8 @@ class QuestionAnsweringSystem:
         else:
             print("* 유사 기사 검색 실패. 신규 기사 수집")
             start_generate_keyword = time.time()
-            keyword = self.generate_keyword(question)
+            # keyword = self.generate_keyword(question)
+            keyword = self.process_sentence(question)
             end_generate_keyword = time.time()
             print(f"2-1. 키워드 추출: {(end_generate_keyword - start_generate_keyword):.2f}")
 
