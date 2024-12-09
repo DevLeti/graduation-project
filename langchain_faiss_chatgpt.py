@@ -100,7 +100,10 @@ class QuestionAnsweringSystem:
             llm=self.llm,
             prompt=PromptTemplate(
                 input_variables=["chat_history", "input"],
-                template="You are a helpful AI assistant. Please summarize article. Chat History: {chat_history}\n{"
+                template="당신은 주어진 articles를 기반으로 question을 답해야 합니다.\
+                            답할 수 있는 경우 답과 함께 근거 article를 붙여 서술하고,\
+                            알 수 없는 경우 '모르겠습니다.'라고 답변하세요.\
+                            Chat History: {chat_history}\n{"
                          "input}\nAI:"
             ),
             memory=self.memory
@@ -110,6 +113,7 @@ class QuestionAnsweringSystem:
         nouns = self.okt.nouns(sentence)
         noun_string = ' '.join(nouns)
         return noun_string
+
     def generate_keyword(self, user_keyword):
         keyword_gen_template = """아래의 질문을 몇가지 키워드로 요약해줘.
         질문: {question}"""
@@ -198,13 +202,13 @@ if __name__ == "__main__":
 
     # 질문 테스트
     questions = [
-        "AI가 우리의 삶을 어떻게 바꿀까요?",
-        "지구 온난화의 주요 원인은 무엇인가요?",
-        "암 치료 기술로 무엇이 있나요?",
-        "태양계에서 제일 큰 행성이 뭐에요?",
-        "프랑스 대혁명의 원인을 알고싶어.",
-        "물을 8잔씩 마셔야 해?",
-        "인지부조화 설명 및 예시",
+        # "AI가 우리의 삶을 어떻게 바꿀까요?",
+        # "지구 온난화의 주요 원인은 무엇인가요?",
+        # "암 치료 기술로 무엇이 있나요?",
+        # "태양계에서 제일 큰 행성이 뭐에요?",
+        # "프랑스 대혁명의 원인을 알고싶어.",
+        # "물을 8잔씩 마셔야 해?",
+        # "인지부조화 설명 및 예시",
         #
         # "오물풍선 피해사례",
         # "12월 3일 계엄령 사태 설명",
