@@ -114,15 +114,15 @@ class QuestionAnsweringSystem:
         noun_string = ' '.join(nouns)
         return noun_string
 
-    def generate_keyword(self, user_keyword):
-        keyword_gen_template = """아래의 질문을 몇가지 키워드로 요약해줘.
-        질문: {question}"""
-        prompt = PromptTemplate.from_template(keyword_gen_template)
-        # prompt.format(question="아이유 몇살이야?")
-
-        chat_model = ChatOpenAI(openai_api_key=api_key)
-        keyword = chat_model.predict(prompt.format(question=user_keyword))
-        return keyword
+    # def generate_keyword(self, user_keyword):
+    #     keyword_gen_template = """아래의 질문을 몇가지 키워드로 요약해줘.
+    #     질문: {question}"""
+    #     prompt = PromptTemplate.from_template(keyword_gen_template)
+    #     # prompt.format(question="아이유 몇살이야?")
+    #
+    #     chat_model = ChatOpenAI(openai_api_key=api_key)
+    #     keyword = chat_model.predict(prompt.format(question=user_keyword))
+    #     return keyword
 
     def add_question_article_pairs(self, questions, articles):
         self.matcher.add_question_article_pairs(questions, articles)
